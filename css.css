@@ -1,4 +1,4 @@
-/* style.css - 전체 코드 */
+/* style.css - 전체 코드 (통화 단위 스타일 포함) */
 body {
     font-family: sans-serif;
     line-height: 1.6;
@@ -30,6 +30,7 @@ h1 {
     margin-bottom: 5px;
     font-weight: bold;
 }
+
 
 /* 모든 폼 입력 요소들의 기본 스타일 */
 .form-group input[type="text"],
@@ -96,7 +97,7 @@ h1 {
 
 .checkbox-item label {
    margin-bottom: 0;
-   font-weight: normal;
+   font-weight: normal; /* 체크박스 라벨은 일반 굵기 */
 }
 
 /* 통화 단위 옵션 스타일 */
@@ -112,7 +113,7 @@ h1 {
 }
 
 .currency-label { /* '통화:' 라벨 스타일 */
-    font-weight: bold;
+    font-weight: bold; /* 통화 라벨은 굵게 */
     margin-right: 10px;
     align-self: center;
     padding-bottom: 0;
@@ -132,7 +133,7 @@ h1 {
 
 .currency-item label { /* 통화단위 라벨 */
     margin-bottom: 0;
-    font-weight: normal;
+    font-weight: normal; /* 일반 굵기 */
     white-space: nowrap;
 }
 
