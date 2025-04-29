@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>예약 요청 생성기</title>
-    <link rel="stylesheet" href="style.css"> {/* <-- CSS 파일 연결 추가됨 */}
+    <link rel="stylesheet" href="style.css"> 
 </head>
 <body>
     <div class="container">
@@ -54,22 +54,20 @@
             <div class="form-group">
                 <label for="roomRate">객실 요금:</label>
                 <input type="number" id="roomRate" placeholder="금액 입력" required>
-                {/* 통화 단위 체크박스가 생성될 컨테이너 */}
-                <div id="currencySelection" class="currency-options">
-                    {/* JavaScript가 여기에 체크박스를 동적으로 생성합니다. */}
-                </div>
+                             <div id="currencySelection" class="currency-options">
+                            </div>
             </div>
 
             <div class="form-group">
                 <label>특별 요청사항 (선택 및 직접 입력):</label>
                 <div id="requestCheckboxes">
                     <div class="checkbox-item">
-                      <input type="checkbox" id="req_double" name="common_request" value="1 Double bed">
-                      <label for="req_double">1 Double bed</label>
+                      <input type="checkbox" id="req_double" name="common_request" value="Double bed">
+                      <label for="req_double">Double bed</label>
                     </div>
                     <div class="checkbox-item">
-                      <input type="checkbox" id="req_twin" name="common_request" value="2 Twin Bed">
-                      <label for="req_twin">2 Twin Bed</label>
+                      <input type="checkbox" id="req_twin" name="common_request" value="Twin Bed">
+                      <label for="req_twin">Twin Bed</label>
                     </div>
                     <div class="checkbox-item">
                       <input type="checkbox" id="req_high_floor" name="common_request" value="High Floor">
