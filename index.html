@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>예약 요청 생성기</title>
+    </head>
+<body>
+    <div class="container">
+        <h1>예약 요청 생성기</h1>
+
+        <form id="bookingForm">
+            <div class="form-group">
+                <label for="hotelName">호텔명:</label>
+                <select id="hotelName" required>
+                    <option value="">-- 호텔 선택 --</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="checkinDate">체크인 날짜:</label>
+                <input type="date" id="checkinDate" required>
+            </div>
+
+            <div class="form-group">
+                <label for="nightsInput">박수:</label>
+                <input type="number" id="nightsInput" value="1" min="1" required>
+            </div>
+
+            <div class="form-group">
+                <label for="checkoutDateDisplay">체크아웃 날짜 (자동 계산):</label>
+                <input type="text" id="checkoutDateDisplay" readonly style="background-color: #e9ecef;">
+            </div>
+
+            <div class="form-group">
+                <label for="numRooms">객실 수:</label>
+                <input type="number" id="numRooms" value="1" min="1" required>
+            </div>
+
+            <div class="form-group">
+                <label for="roomCategory">객실 카테고리:</label>
+                <select id="roomCategory" required>
+                    <option value="">-- 호텔 먼저 선택 --</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>투숙객 이름 (객실별):</label>
+                <div id="guestNameInputsContainer">
+                    </div>
+            </div>
+
+            <div class="form-group">
+                <label for="roomRate">객실 요금:</label>
+                <input type="number" id="roomRate" placeholder="금액 입력" required>
+                               <div id="currencySelection" class="currency-options">
+                                 </div>
+            </div>
+
+            <div class="form-group">
+                <label>특별 요청사항 (선택 및 직접 입력):</label>
+                <div id="requestCheckboxes">
+                    <div class="checkbox-item">
+                      <input type="checkbox" id="req_double" name="common_request" value="Double bed">
+                      <label for="req_double">Double bed</label>
+                    </div>
+                    <div class="checkbox-item">
+                      <input type="checkbox" id="req_twin" name="common_request" value="Twin Bed">
+                      <label for="req_twin">Twin Bed</label>
+                    </div>
+                    <div class="checkbox-item">
+                      <input type="checkbox" id="req_high_floor" name="common_request" value="High Floor">
+                      <label for="req_high_floor">High Floor</label>
+                    </div>
+                    <div class="checkbox-item">
+                      <input type="checkbox" id="req_non_smoking" name="common_request" value="Non-smoking Room">
+                      <label for="req_non_smoking">Non-smoking Room</label>
+                    </div>
+                    <div class="checkbox-item">
+                      <input type="checkbox" id="req_adjoining" name="common_request" value="Adjoining room">
+                      <label for="req_adjoining">Adjoining room</label>
+                    </div>
+                    <div class="checkbox-item">
+                      <input type="checkbox" id="req_honeymoon" name="common_request" value="Honeymoon">
+                      <label for="req_honeymoon">Honeymoon</label>
+                    </div>
+                     <div class="checkbox-item">
+                      <input type="checkbox" id="req_late_checkin" name="common_request" value="Late check in">
+                      <label for="req_late_checkin">Late check in</label>
+                    </div>
+                     <div class="checkbox-item">
+                      <input type="checkbox" id="req_baby_cot" name="common_request" value="Baby cot">
+                      <label for="req_baby_cot">Baby cot</label>
+                    </div>
+                     <div class="checkbox-item">
+                      <input type="checkbox" id="req_connecting" name="common_request" value="Connecting room">
+                      <label for="req_connecting">Connecting room</label>
+                    </div>
+                </div>
+                <textarea id="specialRequests" rows="2" placeholder="기타 요청사항을 직접 입력하세요..."></textarea>
+            </div>
+
+            <button type="button" id="generateButton">예약 요청 생성</button>
+        </form>
+
+        <div class="output-area">
+            <h2>생성된 요청 내용</h2>
+            <textarea id="outputArea" rows="18" readonly></textarea>
+            <button type="button" id="copyButton" style="display: none;">내용 복사</button>
+        </div>
+    </div>
+
+    </body>
+</html>
