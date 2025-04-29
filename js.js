@@ -1,4 +1,4 @@
-// === CodePen 테스트용 전체 JavaScript 코드 (API 키 직접 포함 + 모든 기능) ===
+// === 전체 JavaScript 코드 (API 키 직접 포함 + 모든 기능) ===
 
 // --- 데이터 ---
 let hotelData = [];
@@ -8,7 +8,8 @@ const currencies = ["VND", "USD", "TWD", "THB", "SGD", "NZD", "MYR", "JPY", "HKD
 
 async function loadHotelsFromCMS() {
     const CMS_SPACE_ID = 'imbg4efg59wo';
-    const CMS_ACCESS_TOKEN = 'iNAsd2_-D9rc7oGpsD-NiviCaNr15S8lhbgPXmwnT_A'; // 실제 토큰 값
+    // 🚨 보안 주의: 실제 Access Token이 코드에 포함되어 있습니다!
+    const CMS_ACCESS_TOKEN = 'iNAsd2_-D9rc7oGpsD-NiviCaNr15S8lhbgPXmwnT_A';
     const CMS_API_ENDPOINT = `https://cdn.contentful.com/spaces/${CMS_SPACE_ID}/environments/master/entries?content_type=hotel`;
     console.log("Attempting to load data from Contentful:", CMS_API_ENDPOINT);
     try {
