@@ -1,0 +1,195 @@
+/* style.css - 전체 코드 */
+body {
+    font-family: sans-serif;
+    line-height: 1.6;
+    padding: 20px;
+    background-color: #f4f4f4;
+}
+
+.container {
+    max-width: 600px;
+    margin: auto;
+    background: #fff;
+    padding: 20px 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+/* 기본 라벨 스타일 */
+.form-group > label:first-child:not(.currency-label):not([for^='req_']):not([for^='curr_']) {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+/* 모든 폼 입력 요소들의 기본 스타일 */
+.form-group input[type="text"],
+.form-group input[type="date"],
+.form-group input[type="number"],
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 0.95rem;
+}
+
+/* 읽기 전용 필드 스타일 */
+.form-group input[readonly] {
+     background-color: #e9ecef;
+     cursor: not-allowed;
+}
+
+/* Textarea 스타일 */
+.form-group textarea {
+    resize: vertical;
+    margin-top: 5px;
+}
+
+/* 동적 투숙객 이름 입력 그룹 스타일 */
+.guest-input-group {
+    margin-bottom: 12px;
+}
+
+.guest-input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.guest-input-group input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* 특별 요청 체크박스 영역 스타일 */
+#requestCheckboxes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 5px 10px;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #eee;
+  border-radius: 4px;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+}
+
+.checkbox-item input[type="checkbox"] {
+  width: auto;
+  margin-right: 8px;
+}
+
+.checkbox-item label {
+   margin-bottom: 0;
+   font-weight: normal;
+}
+
+/* 통화 단위 옵션 스타일 */
+.currency-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 15px;
+    margin-top: 8px;
+    padding-top: 5px;
+    border: 1px solid #eee;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.currency-label { /* '통화:' 라벨 스타일 */
+    font-weight: bold;
+    margin-right: 10px;
+    align-self: center;
+    padding-bottom: 0;
+    display: inline-block;
+}
+
+.currency-item { /* 체크박스 + 라벨 그룹 */
+    display: flex;
+    align-items: center;
+}
+
+.currency-item input[type="checkbox"] { /* 통화단위 체크박스 */
+    width: auto;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+.currency-item label { /* 통화단위 라벨 */
+    margin-bottom: 0;
+    font-weight: normal;
+    white-space: nowrap;
+}
+
+/* 버튼 기본 스타일 */
+button {
+    display: inline-block;
+    background: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 10px;
+    transition: background-color 0.2s ease;
+}
+
+/* 생성 버튼 스타일 */
+button#generateButton {
+    width: 100%;
+    margin-top: 20px;
+}
+
+/* 버튼 호버 효과 */
+button:hover {
+    background: #0056b3;
+}
+
+/* 결과 출력 영역 스타일 */
+.output-area {
+    margin-top: 30px;
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+}
+
+.output-area h2 {
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+#outputArea {
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f9fa;
+    font-family: monospace;
+    white-space: pre-wrap;
+    box-sizing: border-box;
+    padding: 10px;
+    font-size: 0.9rem;
+}
+
+#copyButton {
+    background-color: #28a745;
+    margin-top: 10px;
+    float: right;
+}
+#copyButton:hover{
+     background-color: #218838;
+}
