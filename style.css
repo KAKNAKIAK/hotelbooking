@@ -33,9 +33,9 @@ h1 {
 
 
 /* 모든 폼 입력 요소들의 기본 스타일 */
-.form-group input[type="text"],
+.form-group input[type="text"]:not(.etc-label-input),
 .form-group input[type="date"],
-.form-group input[type="number"],
+.form-group input[type="number"]:not(#rateCalculationTable input[type="number"]), /* 계산 테이블 내 숫자 입력 제외 */
 .form-group select,
 .form-group textarea {
     width: 100%;
@@ -48,8 +48,8 @@ h1 {
 
 /* 읽기 전용 필드 스타일 */
 .form-group input[readonly] {
-     background-color: #e9ecef;
-     cursor: not-allowed;
+    background-color: #e9ecef;
+    cursor: not-allowed;
 }
 
 /* Textarea 스타일 */
@@ -71,33 +71,37 @@ h1 {
 
 .guest-input-group input {
     width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
     box-sizing: border-box;
+    font-size: 0.95rem;
 }
 
 /* 특별 요청 체크박스 영역 스타일 */
 #requestCheckboxes {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 5px 10px;
-  margin-bottom: 10px;
-  padding: 10px;
-  border: 1px solid #eee;
-  border-radius: 4px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 5px 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #eee;
+    border-radius: 4px;
 }
 
 .checkbox-item {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 }
 
 .checkbox-item input[type="checkbox"] {
-  width: auto;
-  margin-right: 8px;
+    width: auto;
+    margin-right: 8px;
 }
 
 .checkbox-item label {
-   margin-bottom: 0;
-   font-weight: normal;
+    margin-bottom: 0;
+    font-weight: normal;
 }
 
 /* 통화 단위 옵션 스타일 */
@@ -105,14 +109,13 @@ h1 {
     display: flex;
     flex-wrap: wrap;
     gap: 10px 15px;
-    margin-top: 8px;
     padding-top: 5px;
     border: 1px solid #eee;
     padding: 10px;
     border-radius: 4px;
 }
 
-.currency-label { /* '통화:' 라벨 스타일 */
+.currency-label {
     font-weight: bold;
     margin-right: 10px;
     align-self: center;
@@ -120,18 +123,18 @@ h1 {
     display: inline-block;
 }
 
-.currency-item { /* 체크박스 + 라벨 그룹 */
+.currency-item {
     display: flex;
     align-items: center;
 }
 
-.currency-item input[type="checkbox"] { /* 통화단위 체크박스 */
+.currency-item input[type="checkbox"] {
     width: auto;
     margin-right: 5px;
     vertical-align: middle;
 }
 
-.currency-item label { /* 통화단위 라벨 */
+.currency-item label {
     margin-bottom: 0;
     font-weight: normal;
     white-space: nowrap;
@@ -151,13 +154,11 @@ button {
     transition: background-color 0.2s ease;
 }
 
-/* 생성 버튼 스타일 */
 button#generateButton {
     width: 100%;
     margin-top: 20px;
 }
 
-/* 버튼 호버 효과 */
 button:hover {
     background: #0056b3;
 }
@@ -184,6 +185,7 @@ button:hover {
     box-sizing: border-box;
     padding: 10px;
     font-size: 0.9rem;
+    min-height: 200px;
 }
 
 #copyButton {
@@ -192,5 +194,136 @@ button:hover {
     float: right;
 }
 #copyButton:hover{
-     background-color: #218838;
+    background-color: #218838;
+}
+
+/* === 계산 테이블 스타일 === */
+#rateCalculationTable {
+    border-collapse: collapse;
+    width: 100%;
+    border: none;
+    font-family: sans-serif;
+    margin-top: 5px;
+    margin-bottom: 0;
+}
+
+#rateCalculationTable th {
+    border: 1px solid #ddd;
+    padding: 8px 12px;
+    text-align: center;
+    background-color: #f2f2f2;
+    font-weight: bold;
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+#rateCalculationTable td {
+    border: 1px solid #eee;
+    padding: 6px 10px;
+    text-align: left;
+    vertical-align: middle;
+    font-size: 0.9rem;
+}
+
+#rateCalculationTable tbody tr:not([data-row-id="etc"]):not(#total-row) td:first-child { /* TOTAL 행 제외 */
+    font-weight: bold;
+    min-width: 80px;
+    text-align: center;
+    background-color: #f9f9f9;
+}
+
+/* 테이블 내 숫자 입력 필드 (NET, 박수, 개수) */
+#rateCalculationTable input[type="number"].input1,
+#rateCalculationTable input[type="number"].input2,
+#rateCalculationTable input[type="number"].input3 {
+    width: 65px;
+    padding: 5px;
+    text-align: right;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 0.9rem;
+}
+/* 스피너 숨기기 */
+#rateCalculationTable input[type=number]::-webkit-inner-spin-button,
+#rateCalculationTable input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+#rateCalculationTable input[type=number] {
+    -moz-appearance: textfield;
+}
+
+/* ETC 항목명 입력 */
+#rateCalculationTable input[type="text"].etc-label-input {
+    width: 100%;
+    max-width: 140px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 0.9rem;
+}
+#rateCalculationTable tr[data-row-id="etc"] td:first-child {
+    text-align: center;
+    padding: 4px 8px;
+    background-color: #f9f9f9;
+}
+
+/* 곱하기 기호 */
+#rateCalculationTable .multiply-symbol {
+    text-align: center;
+    padding: 0 5px;
+    border-left: none;
+    border-right: none;
+    font-weight: bold;
+    color: #777;
+}
+
+/* 각 행 산출값 셀 (텍스트) */
+#rateCalculationTable .output-cell:not(.total-sum-input-style) { /* TOTAL 입력 필드 제외 */
+    text-align: right;
+    min-width: 80px;
+    font-weight: bold;
+    background-color: #f0f0f0;
+    padding-right: 10px;
+}
+
+/* TOTAL 레이블 셀 */
+#rateCalculationTable .total-label-cell {
+    text-align: center;
+    font-weight: bold;
+    background-color: #e2e2e2;
+}
+
+/* === TOTAL 입력 필드 스타일 시작 === */
+#rateCalculationTable #total-sum-cell { /* TOTAL 값을 감싸는 TD */
+    padding: 2px; /* 내부 input과의 간격 최소화 */
+    background-color: #d8d8d8; /* TD 배경 강조 */
+}
+#rateCalculationTable input.total-sum-input-style {
+    /* 기존 output-cell 스타일 상속 + 추가/수정 */
+    text-align: right;
+    font-weight: bold;
+    background-color: #fff; /* 수정 가능하게 흰색 배경 */
+    font-size: 1rem;
+    width: 100%; /* 셀 너비 채움 */
+    box-sizing: border-box; /* 패딩/보더 포함하여 너비 계산 */
+    border: 1px solid #bbb; /* 약간 더 진한 테두리 */
+    padding: 5px 8px; /* 내부 여백 */
+    border-radius: 4px;
+}
+/* === TOTAL 입력 필드 스타일 끝 === */
+
+
+/* 입력창이 있는 셀 정렬 */
+#rateCalculationTable td:has(input[type="number"]),
+#rateCalculationTable td:has(input[type="text"].etc-label-input) {
+    text-align: center;
+}
+
+/* 박수, 개수 컬럼 헤더 스타일 */
+#rateCalculationTable th.col-nights,
+#rateCalculationTable th.col-rooms {
+    color: #007bff; /* 강조색 */
 }
