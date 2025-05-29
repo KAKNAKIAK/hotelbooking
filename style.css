@@ -302,7 +302,6 @@ button:hover {
     background-color: #d8d8d8; /* TD 배경 강조 */
 }
 #rateCalculationTable input.total-sum-input-style {
-    /* 기존 output-cell 스타일 상속 + 추가/수정 */
     text-align: right;
     font-weight: bold;
     background-color: #fff; /* 수정 가능하게 흰색 배경 */
@@ -326,4 +325,44 @@ button:hover {
 #rateCalculationTable th.col-nights,
 #rateCalculationTable th.col-rooms {
     color: #007bff; /* 강조색 */
+}
+
+/* --- 추가된 스타일 --- */
+
+/* 항목 추가 버튼 */
+.add-row-btn {
+    background-color: #6c757d;
+    color: white;
+    padding: 5px 10px;
+    font-size: 0.9rem;
+    border-radius: 4px;
+    cursor: pointer;
+    border: none;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+.add-row-btn:hover {
+    background-color: #5a6268;
+}
+
+/* 행 삭제 버튼 */
+.delete-row-btn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 4px 8px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    border-radius: 3px;
+}
+.delete-row-btn:hover {
+    background-color: #c82333;
+}
+
+/* 삭제 버튼이 들어갈 셀 */
+#rateCalculationTable td.delete-cell {
+    text-align: center;
+    border-left: none;
+    padding: 4px;
+    vertical-align: middle;
 }
