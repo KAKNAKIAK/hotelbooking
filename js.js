@@ -42,10 +42,10 @@ const translations = {
         request: "Request",
         none: "None",
         looking_forward: "Looking forward to hearing from you soon.",
-        best_regards: "Best regards,\nNaeil Tour"
+        best_regards: "Best regards,\nNAEILTOUR"
     },
     ja: {
-        greeting: "お世話になっております。韓国の明日ツアーでございます。",
+        greeting: "お世話になっております。韓国のNAEILTOUR（ネイルツアー）ーでございます。",
         request_intro: "下記の通り新規予約をお願いいたします。ご確認の上、ご返信いただきますようお願いいたします。",
         booking_details: "【予約詳細】",
         hotel: "ホテル名",
@@ -61,10 +61,10 @@ const translations = {
         request: "リクエスト",
         none: "なし",
         looking_forward: "ご返信をお待ちしております。",
-        best_regards: "何卒よろしくお願い申し上げます。\nNaeil Tour"
+        best_regards: "何卒よろしくお願い申し上げます。\nNAEILTOUR"
     },
     zh: {
-        greeting: "您好，内日旅游。",
+        greeting: "您好，NAEILTOUR。",
         request_intro: "请确认以下新预订请求。",
         booking_details: "【预订详情】",
         hotel: "酒店名称",
@@ -80,7 +80,7 @@ const translations = {
         request: "特殊要求",
         none: "无",
         looking_forward: "期待您的尽快回复。",
-        best_regards: "此致，\nNaeil Tour"
+        best_regards: "此致，\nNAEILTOUR"
 }
 ,
     es: {
@@ -475,7 +475,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         rateTableBody: document.querySelector('#rateCalculationTable tbody'),
         totalSumInput: document.getElementById('total-sum-input'),
         addRowButton: document.getElementById('addRowButton'),
-        languageRadios: document.querySelectorAll('input[name="language"]')
+        languageRadios: document.querySelectorAll('input[name="language"]'),
+        inquiryButton: document.getElementById('inquiryButton') // 문의 버튼 추가
     };
 
     // --- 초기화 및 데이터 로드 ---
@@ -534,6 +535,78 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         });
     });
+
+    // 객실 문의하기 버튼 이벤트 리스너
+    elements.inquiryButton.addEventListener('click', () => {
+        const hotelSelect = document.getElementById('hotelName');
+        const hotelNameText = hotelSelect.selectedIndex > 0 ? hotelSelect.options[hotelSelect.selectedIndex].text : '';
+        const checkinDate = document.getElementById('checkinDate').value;
+        const checkoutDate = document.getElementById('checkoutDateDisplay').value;
+        const nights = document.getElementById('nightsInput').value;
+        const roomType = document.getElementById('roomCategory').value;
+        const numRooms = document.getElementById('numRooms').value;
+
+        // 필수 값 확인
+        if (!hotelNameText || hotelSelect.selectedIndex === 0) {
+            alert('호텔을 선택해주세요.');
+            return;
+        }
+        if (!checkinDate) {
+            alert('체크인 날짜를 입력해주세요.');
+            return;
+        }
+        if (!roomType) {
+            alert('객실 카테고리를 선택해주세요.');
+            return;
+        }
+
+        // 호텔명 파싱
+        let hotelNameKo = '';
+        let hotelNameEn = '';
+        if (hotelNameText.includes(']')) {
+            const fullNamePart = hotelNameText.split(']')[1].trim();
+            const nameParts = fullNamePart.split(' / ');
+            hotelNameKo = nameParts[0] ? nameParts[0].trim() : '';
+            hotelNameEn = nameParts[1] ? nameParts[1].trim() : '';
+        } else {
+            hotelNameKo = hotelNameText; // 형식에 맞지 않는 경우 전체 텍스트를 한글명으로 사용
+        }
+
+        // 1. 한글 문의 텍스트 생성
+        const inquiryTextKo = `리조트(호텔)명 : ${hotelNameKo}\n` +
+                          `체크인날짜 / 체크아웃날짜: ${checkinDate} / ${checkoutDate}\n` +
+                          `박수 : ${nights}박\n` +
+                          `룸타입 : ${roomType}\n` +
+                          `객실 수 : ${numRooms}개`;
+        
+        // 2. 영어 문의 텍스트 생성
+        const inquiryTextEn = `Hotel/Resort Name (Korean): ${hotelNameKo}\n` +
+                          `Hotel/Resort Name (English): ${hotelNameEn}\n` +
+                          `Check-in Date / Check-out Date: ${checkinDate} / ${checkoutDate}\n` +
+                          `Number of Nights: ${nights}\n` +
+                          `Room Type: ${roomType}\n` +
+                          `Number of Rooms: ${numRooms}`;
+
+        // 3. 한글/영어 문의 통합
+        const combinedInquiryText = `${inquiryTextKo}\n\n---\n\n${inquiryTextEn}`;
+
+
+        // 클립보드에 복사
+        navigator.clipboard.writeText(combinedInquiryText).then(() => {
+            const originalText = elements.inquiryButton.textContent;
+            const originalColor = elements.inquiryButton.style.backgroundColor;
+            elements.inquiryButton.textContent = '복사 완료!';
+            elements.inquiryButton.style.backgroundColor = '#28a745'; // Green
+            setTimeout(() => {
+                elements.inquiryButton.textContent = originalText;
+                elements.inquiryButton.style.backgroundColor = originalColor;
+            }, 2000);
+        }).catch(err => {
+            console.error('문의 내용 복사 실패: ', err);
+            alert('문의 내용 복사에 실패했습니다.');
+        });
+    });
+
 
     document.querySelectorAll('input[type="text"], input[type="number"]').forEach(input => {
         input.addEventListener('focus', () => input.select());
