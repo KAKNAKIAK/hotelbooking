@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>호텔 DB 관리</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .admin-container { max-width: 900px; }
+        .form-container { background: #f9f9f9; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+        .hotel-list-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .hotel-list-table th, .hotel-list-table td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; vertical-align: middle; }
+        .hotel-list-table th { background-color: #f2f2f2; }
+        .hotel-list-table .actions { text-align: center; white-space: nowrap; }
+        .hotel-list-table button { padding: 5px 10px; font-size: 0.9rem; margin: 0 4px; }
+        .btn-edit { background-color: #007bff; } .btn-edit:hover { background-color: #0056b3; }
+        .btn-delete { background-color: #dc3545; } .btn-delete:hover { background-color: #c82333; }
+        .btn-save { background-color: #28a745; width: 100%; } .btn-save:hover { background-color: #218838; }
+        .btn-clear { background-color: #6c757d; width: 100%; } .btn-clear:hover { background-color: #5a6268; }
+        .search-container { margin-bottom: 20px; }
+        .search-container input { width: 100%; padding: 10px; font-size: 1rem; border: 1px solid #ccc; border-radius: 4px; }
+        /* 돌아가기 버튼 스타일 */
+        .main-page-link-container {
+            text-align: right;
+            margin-bottom: 15px;
+        }
+        .main-page-link {
+            font-size: 0.9rem;
+            text-decoration: none;
+            color: #007bff;
+            padding: 5px 10px;
+            border: 1px solid #007bff;
+            border-radius: 4px;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        .main-page-link:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container admin-container">
+        <!-- 메인 페이지로 돌아가는 버튼 추가 -->
+        <div class="main-page-link-container">
+            <a href="index.html" class="main-page-link">🏠 수배서 작성기로 돌아가기</a>
+        </div>
+
+        <h1>호텔 DB 관리</h1>
+
+        <div class="form-container">
+            <h2>호텔 정보 입력/수정</h2>
+            <form id="hotelForm">
+                <input type="hidden" id="hotelId">
+                <div class="form-group">
+                    <label for="country">국가:</label>
+                    <input type="text" id="country" placeholder="예: 베트남" required>
+                </div>
+                <div class="form-group">
+                    <label for="region">지역:</label>
+                    <input type="text" id="region" placeholder="예: 다낭" required>
+                </div>
+                <div class="form-group">
+                    <label for="hotelNameKo">호텔명 (한글):</label>
+                    <input type="text" id="hotelNameKo" placeholder="예: 빈펄 리조트 & 스파" required>
+                </div>
+                <div class="form-group">
+                    <label for="hotelNameEn">호텔명 (영문):</label>
+                    <input type="text" id="hotelNameEn" placeholder="예: Vinpearl Resort & Spa" required>
+                </div>
+                <div class="form-group">
+                    <label for="roomCategoriesAdmin">객실 카테고리 (쉼표(,)로 구분하여 입력):</label>
+                    <textarea id="roomCategoriesAdmin" rows="3" placeholder="예: Deluxe Room, Ocean View Suite, Family Villa"></textarea>
+                </div>
+                <button type="submit" id="saveButton" class="btn-save">저장</button>
+                <button type="button" id="clearButton" class="btn-clear">새로 입력</button>
+            </form>
+        </div>
+
+        <div class="hotel-list-container">
+            <h2>호텔 목록</h2>
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="국가, 지역, 호텔명(한/영)으로 검색...">
+            </div>
+            <table class="hotel-list-table">
+                <thead>
+                    <tr>
+                        <th>국가</th>
+                        <th>지역</th>
+                        <th>호텔명 (한글)</th>
+                        <th>호텔명 (영문)</th>
+                        <th>객실 카테고리</th>
+                        <th class="actions">관리</th>
+                    </tr>
+                </thead>
+                <tbody id="hotelList">
+                    <tr><td colspan="6" style="text-align:center;">데이터를 불러오는 중입니다...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Firebase SDK (v9 호환성 버전) -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+
+    <script src="admin.js"></script>
+</body>
+</html>
