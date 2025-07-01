@@ -1,8 +1,110 @@
-// js.js (Firebase 연동 및 검색 기능 추가 버전)
+// js.js (Firebase 연동 및 다국어 번역 기능 추가 버전)
 
 // --- 데이터 ---
 let hotelData = []; // Firestore에서 가져온 원본 데이터
 const currencies = ["VND", "USD", "TWD", "THB", "SGD", "NZD", "MYR", "JPY", "HKD", "GBP", "EUR", "CZK", "CNY", "CHF", "CAD", "AUD", "PHP", "MOP", "HUF", "IDR", "HRK"];
+
+// --- 다국어 번역 데이터 ---
+const translations = {
+    ko: {
+        greeting: "안녕하세요, 내일투어입니다!",
+        request_intro: "아래와 같이 신규 예약을 요청하오니 확인 후 회신 부탁드립니다.",
+        booking_details: "[예약 상세 정보]",
+        hotel: "호텔명",
+        check_in: "체크인",
+        check_out: "체크아웃",
+        room_type: "객실 타입",
+        nights: "박",
+        nights_suffix: "",
+        rooms: "객실",
+        rooms_suffix: "",
+        guest_name: "투숙객명 (성/이름)",
+        room_rate: "객실 요금",
+        request: "요청사항",
+        none: "없음",
+        looking_forward: "빠른 회신 기다리겠습니다.",
+        best_regards: "감사합니다,\n내일투어 드림"
+    },
+    en: {
+        greeting: "Greetings from Naeil Tour, Korea!",
+        request_intro: "Please find the new booking request as below and confirm the booking.",
+        booking_details: "[Booking Details]",
+        hotel: "Hotel",
+        check_in: "Check in",
+        check_out: "Check out",
+        room_type: "Room Type",
+        nights: "Nights",
+        nights_suffix: "",
+        rooms: "Rooms",
+        rooms_suffix: "",
+        guest_name: "Guest Name(Last/First)",
+        room_rate: "Room Rate",
+        request: "Request",
+        none: "None",
+        looking_forward: "Looking forward to hearing from you soon.",
+        best_regards: "Best regards,\nNaeil Tour"
+    },
+    ja: {
+        greeting: "お世話になっております。韓国の明日ツアーでございます。",
+        request_intro: "下記の通り新規予約をお願いいたします。ご確認の上、ご返信いただきますようお願いいたします。",
+        booking_details: "【予約詳細】",
+        hotel: "ホテル名",
+        check_in: "チェックイン",
+        check_out: "チェックアウト",
+        room_type: "ルームタイプ",
+        nights: "泊",
+        nights_suffix: "",
+        rooms: "室",
+        rooms_suffix: "",
+        guest_name: "宿泊者名（姓／名）",
+        room_rate: "宿泊料金",
+        request: "リクエスト",
+        none: "なし",
+        looking_forward: "ご返信をお待ちしております。",
+        best_regards: "何卒よろしくお願い申し上げます。\nNaeil Tour"
+    },
+    zh: {
+        greeting: "您好，内日旅游。",
+        request_intro: "请确认以下新预订请求。",
+        booking_details: "【预订详情】",
+        hotel: "酒店名称",
+        check_in: "入住日期",
+        check_out: "退房日期",
+        room_type: "房型",
+        nights: "晚",
+        nights_suffix: "",
+        rooms: "间",
+        rooms_suffix: "",
+        guest_name: "住客姓名（姓/名）",
+        room_rate: "房价",
+        request: "特殊要求",
+        none: "无",
+        looking_forward: "期待您的尽快回复。",
+        best_regards: "此致，\nNaeil Tour"
+}
+,
+    es: {
+    greeting: "Estimados señores:",
+    request_intro: "Adjuntamos una nueva solicitud de reserva para su confirmación.",
+    booking_details: "Detalles de la Reserva",
+    hotel: "Hotel",
+    check_in: "Entrada",
+    check_out: "Salida",
+    room_type: "Tipo de Habitación",
+    nights: "Noches",
+    nights_suffix: "",
+    rooms: "Habitaciones",
+    rooms_suffix: "",
+    guest_name: "Nombre del Huésped (Apellido/Nombre)",
+    room_rate: "Tarifa de Habitación",
+    request: "Solicitud",
+    none: "Ninguna",
+    looking_forward: "Quedamos a la espera de su respuesta.",
+    best_regards: "Atentamente,\nNaeil Tour"
+}
+
+};
+
 
 // --- 함수 정의 ---
 
@@ -19,7 +121,7 @@ async function loadHotelsFromFirestore() {
       appId: "1:519756477724:web:8e5cea894848f3d8e6f6d9",
       measurementId: "G-RVQHZJFDCS"
     };
-    
+
     if (!firebase.apps.length) {
         firebase.initializeApp(firebaseConfig);
     }
@@ -36,13 +138,13 @@ async function loadHotelsFromFirestore() {
             hotelData = [];
             return;
         }
-        
+
         hotelData = snapshot.docs.map(doc => {
             const data = doc.data();
             return {
                 id: doc.id,
                 // 검색 및 표시에 사용될 통합 이름
-                name: `[${data.country}/${data.region}] ${data.hotelNameKo} / ${data.hotelNameEn}`, 
+                name: `[${data.country}/${data.region}] ${data.hotelNameKo} / ${data.hotelNameEn}`,
                 categories: data.roomCategories || []
             };
         });
@@ -71,7 +173,7 @@ function populateHotelSelectAndCategories(hotelSelect, categorySelect, searchTer
 
     // 드롭다운 목록 초기화
     while (hotelSelect.options.length > 1) { hotelSelect.remove(1); }
-    
+
     if (filteredHotels.length === 0) {
         hotelSelect.options[0].textContent = "-- 검색 결과 없음 --";
     } else {
@@ -83,7 +185,7 @@ function populateHotelSelectAndCategories(hotelSelect, categorySelect, searchTer
             hotelSelect.appendChild(option);
         });
     }
-    
+
     hotelSelect.value = "";
     if (categorySelect) populateCategorySelect(null, categorySelect);
 }
@@ -109,7 +211,6 @@ function populateCategorySelect(hotelId, categorySelect) {
     }
 }
 
-// (calculateCheckoutDate, formatDateForOutput 등 나머지 함수는 이전과 동일합니다)
 function calculateCheckoutDate(checkinInput, nightsInput, checkoutDisplay) {
     const checkinValue = checkinInput.value;
     const nightsValue = parseInt(nightsInput.value, 10);
@@ -251,21 +352,33 @@ function updateTotalSum(totalSumInput) {
     totalSumInput.value = total;
 }
 
-function generateOutput(elements) {
-    const { hotelSelect, checkinDateInput, nightsInput, checkoutDateDisplay, numRoomsInput, categorySelect, specialRequestsTextarea, guestNameInputsContainer, requestCheckboxesContainer, outputArea, copyButton } = elements;
-    
-    let alertMessages = [];
-    if (hotelSelect.selectedIndex === 0) alertMessages.push("호텔명을 선택해주세요.");
-    if (!checkinDateInput.value) alertMessages.push("체크인 날짜를 입력해주세요.");
-    if (!nightsInput.value || nightsInput.value <= 0) alertMessages.push("박수를 1 이상 입력해주세요.");
-    if (!checkoutDateDisplay.value || checkoutDateDisplay.value.includes('오류')) alertMessages.push("체크아웃 날짜를 확인해주세요.");
-    if (!numRoomsInput.value || numRoomsInput.value <= 0) alertMessages.push("객실 수를 1 이상 입력해주세요.");
-    if (!categorySelect.value) alertMessages.push("객실 카테고리를 선택해주세요.");
+function generateOutput() {
+    const elements = {
+        hotelSelect: document.getElementById('hotelName'),
+        checkinDateInput: document.getElementById('checkinDate'),
+        nightsInput: document.getElementById('nightsInput'),
+        checkoutDateDisplay: document.getElementById('checkoutDateDisplay'),
+        numRoomsInput: document.getElementById('numRooms'),
+        categorySelect: document.getElementById('roomCategory'),
+        specialRequestsTextarea: document.getElementById('specialRequests'),
+        guestNameInputsContainer: document.getElementById('guestNameInputsContainer'),
+        requestCheckboxesContainer: document.getElementById('requestCheckboxes'),
+        outputArea: document.getElementById('outputArea'),
+        copyButton: document.getElementById('copyButton')
+    };
 
-    const guestInputs = guestNameInputsContainer.querySelectorAll('.guest-name-input');
+    let alertMessages = [];
+    if (elements.hotelSelect.selectedIndex === 0) alertMessages.push("호텔명을 선택해주세요.");
+    if (!elements.checkinDateInput.value) alertMessages.push("체크인 날짜를 입력해주세요.");
+    if (!elements.nightsInput.value || elements.nightsInput.value <= 0) alertMessages.push("박수를 1 이상 입력해주세요.");
+    if (!elements.checkoutDateDisplay.value || elements.checkoutDateDisplay.value.includes('오류')) alertMessages.push("체크아웃 날짜를 확인해주세요.");
+    if (!elements.numRoomsInput.value || elements.numRoomsInput.value <= 0) alertMessages.push("객실 수를 1 이상 입력해주세요.");
+    if (!elements.categorySelect.value) alertMessages.push("객실 카테고리를 선택해주세요.");
+
+    const guestInputs = elements.guestNameInputsContainer.querySelectorAll('.guest-name-input');
     let guestListString = '';
     let allGuestsEntered = true;
-    if (guestInputs.length === 0 && parseInt(numRoomsInput.value, 10) > 0) {
+    if (guestInputs.length === 0 && parseInt(elements.numRoomsInput.value, 10) > 0) {
         allGuestsEntered = false;
     } else {
         guestInputs.forEach((input, index) => {
@@ -286,43 +399,48 @@ function generateOutput(elements) {
 
     if (alertMessages.length > 0) {
         alert("다음 항목을 확인해주세요:\n- " + alertMessages.join("\n- "));
-        outputArea.value = '';
-        copyButton.style.display = 'none';
+        elements.outputArea.value = '';
+        elements.copyButton.style.display = 'none';
         return;
     }
 
-    const hotelNameValue = hotelSelect.options[hotelSelect.selectedIndex].text;
-    const checkinFormatted = formatDateForOutput(checkinDateInput.value);
-    const checkoutFormatted = formatDateForOutput(checkoutDateDisplay.value);
-    const selectedRequests = Array.from(requestCheckboxesContainer.querySelectorAll('input:checked')).map(cb => cb.value).join(', ');
-    const freeTextRequest = specialRequestsTextarea.value.trim();
+    const selectedLanguage = document.querySelector('input[name="language"]:checked').value;
+    const T = translations[selectedLanguage];
+
+    const hotelNameValue = elements.hotelSelect.options[elements.hotelSelect.selectedIndex].text;
+    const checkinFormatted = formatDateForOutput(elements.checkinDateInput.value);
+    const checkoutFormatted = formatDateForOutput(elements.checkoutDateDisplay.value);
+    const selectedRequests = Array.from(elements.requestCheckboxesContainer.querySelectorAll('input:checked')).map(cb => cb.value).join(', ');
+    const freeTextRequest = elements.specialRequestsTextarea.value.trim();
     let finalRequestString = [selectedRequests, freeTextRequest].filter(Boolean).join('\n');
-    if (!finalRequestString) finalRequestString = 'None';
+    if (!finalRequestString) finalRequestString = T.none;
 
-    const outputText = `Greetings from Naeil Tour, Korea!
-Please find the new booking request as below and confirm the booking.
+    const nightsStr = `${elements.nightsInput.value} ${T.nights}${T.nights_suffix}`;
+    const roomsStr = `${elements.numRoomsInput.value} ${T.rooms}${T.rooms_suffix}`;
 
-[Booking Details]
-Hotel: ${hotelNameValue}
-Check in: ${checkinFormatted}
-Check out: ${checkoutFormatted}
-Room Type: ${categorySelect.value}
-Nights: ${nightsInput.value} Nights
-Rooms: ${numRoomsInput.value} Rooms
+    const outputText = `${T.greeting}
+${T.request_intro}
 
-Guest Name(Last/First):
+${T.booking_details}
+${T.hotel}: ${hotelNameValue}
+${T.check_in}: ${checkinFormatted}
+${T.check_out}: ${checkoutFormatted}
+${T.room_type}: ${elements.categorySelect.value}
+${T.nights.charAt(0).toUpperCase() + T.nights.slice(1)}: ${nightsStr}
+${T.rooms.charAt(0).toUpperCase() + T.rooms.slice(1)}: ${roomsStr}
+
+${T.guest_name}:
 ${guestListString.trim()}
 
-Room Rate: ${roomRateValue.toLocaleString()} ${selectedCurrencyElement.value}
-Request: ${finalRequestString}
+${T.room_rate}: ${roomRateValue.toLocaleString()} ${selectedCurrencyElement.value}
+${T.request}: ${finalRequestString}
 
-Looking forward to hearing from you soon.
+${T.looking_forward}
 
-Best regards,
-Naeil Tour`;
+${T.best_regards}`;
 
-    outputArea.value = outputText.trim();
-    copyButton.style.display = 'inline-block';
+    elements.outputArea.value = outputText.trim();
+    elements.copyButton.style.display = 'inline-block';
 }
 
 function copyOutput(outputArea, copyButton) {
@@ -356,7 +474,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         copyButton: document.getElementById('copyButton'),
         rateTableBody: document.querySelector('#rateCalculationTable tbody'),
         totalSumInput: document.getElementById('total-sum-input'),
-        addRowButton: document.getElementById('addRowButton')
+        addRowButton: document.getElementById('addRowButton'),
+        languageRadios: document.querySelectorAll('input[name="language"]')
     };
 
     // --- 초기화 및 데이터 로드 ---
@@ -364,7 +483,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     await loadHotelsFromFirestore(); // Firestore에서 전체 호텔 데이터 로드
     // 처음에는 모든 호텔 목록을 보여줌
     populateHotelSelectAndCategories(elements.hotelSelect, elements.categorySelect);
-    
+
     updateGuestNameInputs(elements.numRoomsInput.value, elements.guestNameInputsContainer);
     calculateCheckoutDate(elements.checkinDateInput, elements.nightsInput, elements.checkoutDateDisplay);
     syncFormInputsToTable(elements.nightsInput.value, elements.numRoomsInput.value, elements.totalSumInput);
@@ -378,7 +497,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     elements.hotelSelect.addEventListener('change', () => populateCategorySelect(elements.hotelSelect.value, elements.categorySelect));
     elements.checkinDateInput.addEventListener('change', () => calculateCheckoutDate(elements.checkinDateInput, elements.nightsInput, elements.checkoutDateDisplay));
-    
+
     const updateBoth = () => {
         calculateCheckoutDate(elements.checkinDateInput, elements.nightsInput, elements.checkoutDateDisplay);
         syncFormInputsToTable(elements.nightsInput.value, elements.numRoomsInput.value, elements.totalSumInput);
@@ -403,12 +522,22 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     elements.addRowButton.addEventListener('click', addCustomRateRow);
-    elements.generateButton.addEventListener('click', () => generateOutput(elements));
+    elements.generateButton.addEventListener('click', generateOutput);
     elements.copyButton.addEventListener('click', () => copyOutput(elements.outputArea, elements.copyButton));
+
+    // 언어 선택이 변경될 때마다 생성된 내용 다시 번역
+    elements.languageRadios.forEach(radio => {
+        radio.addEventListener('change', () => {
+            // 이미 생성된 내용이 있을 경우에만 다시 생성(번역)
+            if (elements.outputArea.value) {
+                generateOutput();
+            }
+        });
+    });
 
     document.querySelectorAll('input[type="text"], input[type="number"]').forEach(input => {
         input.addEventListener('focus', () => input.select());
     });
-    
+
     console.log("수배서 작성기 초기화 완료.");
 });
