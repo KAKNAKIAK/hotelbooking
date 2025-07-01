@@ -5,22 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>호텔 수배서 작성기</title>
     <link rel="stylesheet" href="style.css">
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-
     <style>
-        /* (기존 스타일 유지) */
+        .admin-link-container { text-align: right; margin-bottom: 15px; }
+        .admin-link { font-size: 0.9rem; text-decoration: none; color: #007bff; padding: 5px 10px; border: 1px solid #007bff; border-radius: 4px; transition: background-color 0.2s, color 0.2s; }
+        .admin-link:hover { background-color: #007bff; color: #fff; }
+        #hotelSearch { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 0.95rem; }
     </style>
 </head>
 <body>
     <div class="container">
+        <div class="admin-link-container">
+            <a href="admin.html" class="admin-link">⚙️ DB 관리 페이지로 가기</a>
+        </div>
+
         <h1>호텔 수배서 작성기</h1>
 
         <form id="bookingForm">
             <div class="form-group">
-                <label for="hotelName">호텔명:</label>
+                <label for="hotelSearch">호텔 검색:</label>
+                <input type="text" id="hotelSearch" placeholder="국가, 지역, 호텔명으로 검색하세요...">
+            </div>
+
+            <div class="form-group">
+                <label for="hotelName">호텔명 선택:</label>
                 <select id="hotelName" required>
-                    <option value="">-- 호텔 선택 --</option>
+                    <option value="">-- 검색 결과가 여기에 표시됩니다 --</option>
                 </select>
             </div>
 
@@ -152,7 +162,6 @@
     <script src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
 
     <script>
-        // (Flatpickr 초기화 스크립트는 기존과 동일)
         document.addEventListener('DOMContentLoaded', function() {
             flatpickr("#checkinDate", {
                 dateFormat: "Y-m-d",
@@ -184,7 +193,11 @@
         });
     </script>
 
-    <script src="js.js"></script>
+    <!-- Firebase SDK (v9 호환성 버전) - 경로 수정 -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
 
+    <script src="js.js"></script>
 </body>
 </html>
